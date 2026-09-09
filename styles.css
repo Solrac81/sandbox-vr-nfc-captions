@@ -1,1 +1,304 @@
-PLACEHOLDER_STYLES
+/* Sandbox VR · The Londoner Macau — mobile-first caption generator */
+
+:root {
+  --bg: #0b0b1a;
+  --bg-elevated: #14142a;
+  --bg-card: #1a1a36;
+  --border: rgba(167, 139, 250, 0.25);
+  --text: #f4f4ff;
+  --text-muted: #a8a8c8;
+  --accent: #a78bfa;
+  --accent-hot: #f472b6;
+  --accent-glow: #22d3ee;
+  --success: #34d399;
+  --danger: #fb7185;
+  --radius: 16px;
+  --tap-min: 52px;
+  --shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
+  --font: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans TC",
+    "Noto Sans SC", "PingFang TC", "PingFang SC", "Microsoft YaHei",
+    sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+  font-family: var(--font);
+  background:
+    radial-gradient(ellipse 120% 80% at 10% -10%, rgba(167, 139, 250, 0.28), transparent 50%),
+    radial-gradient(ellipse 100% 60% at 100% 0%, rgba(244, 114, 182, 0.2), transparent 45%),
+    radial-gradient(ellipse 80% 50% at 50% 100%, rgba(34, 211, 238, 0.12), transparent 50%),
+    var(--bg);
+  color: var(--text);
+  line-height: 1.5;
+}
+
+.app {
+  max-width: 480px;
+  margin: 0 auto;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  padding: 1.25rem 1.25rem 2rem;
+  padding-bottom: max(2rem, env(safe-area-inset-bottom));
+}
+
+/* Header */
+.header {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  margin-bottom: 1.75rem;
+  padding-top: 0.5rem;
+}
+
+.logo-mark {
+  flex-shrink: 0;
+  width: 52px;
+  height: 52px;
+  display: grid;
+  place-items: center;
+  font-weight: 800;
+  font-size: 1rem;
+  letter-spacing: 0.02em;
+  color: var(--bg);
+  background: linear-gradient(135deg, var(--accent), var(--accent-hot));
+  border-radius: 14px;
+  box-shadow: 0 0 24px rgba(167, 139, 250, 0.45);
+}
+
+.brand h1 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.tagline {
+  margin: 0.15rem 0 0;
+  font-size: 0.875rem;
+  color: var(--text-muted);
+}
+
+/* Main / steps */
+.main {
+  flex: 1;
+}
+
+.step {
+  animation: fadeIn 0.28s ease;
+}
+
+.step[hidden] {
+  display: none !important;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.step-title {
+  margin: 0 0 0.35rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+}
+
+.step-hint {
+  margin: 0 0 1.25rem;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+
+/* Choice buttons — large tap targets */
+.choice-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.choice-btn {
+  min-height: var(--tap-min);
+  width: 100%;
+  padding: 0.9rem 1.15rem;
+  font: inherit;
+  font-size: 1.05rem;
+  font-weight: 600;
+  text-align: left;
+  color: var(--text);
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s, transform 0.12s,
+    box-shadow 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.choice-btn:hover,
+.choice-btn:focus-visible {
+  outline: none;
+  border-color: var(--accent);
+  background: #22224a;
+  box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.25);
+}
+
+.choice-btn:active {
+  transform: scale(0.98);
+}
+
+/* Caption result */
+.caption-card {
+  background: var(--bg-elevated);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.15rem 1.2rem;
+  font-size: 1rem;
+  line-height: 1.65;
+  white-space: pre-wrap;
+  word-break: break-word;
+  box-shadow: var(--shadow);
+  min-height: 8rem;
+  margin-bottom: 1.25rem;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.btn-primary,
+.btn-secondary {
+  min-height: var(--tap-min);
+  width: 100%;
+  padding: 0.9rem 1.15rem;
+  font: inherit;
+  font-size: 1.1rem;
+  font-weight: 700;
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.12s, filter 0.15s, box-shadow 0.15s;
+}
+
+.btn-primary {
+  color: #0b0b1a;
+  background: linear-gradient(135deg, var(--accent), var(--accent-hot));
+  box-shadow: 0 4px 20px rgba(167, 139, 250, 0.4);
+}
+
+.btn-primary:hover,
+.btn-primary:focus-visible {
+  outline: none;
+  filter: brightness(1.08);
+  box-shadow: 0 4px 28px rgba(244, 114, 182, 0.45);
+}
+
+.btn-primary:active,
+.btn-secondary:active {
+  transform: scale(0.98);
+}
+
+.btn-primary.copied {
+  background: linear-gradient(135deg, var(--success), #2dd4bf);
+  box-shadow: 0 4px 20px rgba(52, 211, 153, 0.4);
+}
+
+.btn-secondary {
+  color: var(--text);
+  background: transparent;
+  border: 1.5px solid var(--border);
+}
+
+.btn-secondary:hover,
+.btn-secondary:focus-visible {
+  outline: none;
+  border-color: var(--accent-glow);
+  box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.2);
+}
+
+.copy-feedback {
+  margin: 0.75rem 0 0;
+  text-align: center;
+  color: var(--success);
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.copy-feedback[hidden] {
+  display: none !important;
+}
+
+.link-back,
+.link-restart {
+  display: block;
+  margin-top: 1.5rem;
+  padding: 0.65rem;
+  width: 100%;
+  font: inherit;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: center;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.link-back:hover,
+.link-restart:hover,
+.link-back:focus-visible,
+.link-restart:focus-visible {
+  outline: none;
+  color: var(--accent);
+}
+
+.link-restart {
+  margin-top: 0.25rem;
+  color: var(--accent-glow);
+}
+
+/* Footer */
+.footer {
+  margin-top: 2rem;
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  opacity: 0.7;
+}
+
+.footer p {
+  margin: 0;
+}
+
+/* Slightly wider on tablet+ */
+@media (min-width: 480px) {
+  .app {
+    padding-top: 2rem;
+  }
+
+  .step-title {
+    font-size: 1.65rem;
+  }
+}
