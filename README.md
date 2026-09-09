@@ -1,24 +1,42 @@
 # Sandbox VR · The Londoner Macau — Caption Generator
 
-A simple mobile-first web page for guests at **Sandbox VR at The Londoner Macau**. Guests tap an NFC sticker (or scan a QR code), pick a language, answer two quick questions, and get a ready-to-post Instagram / 小红书 caption with hashtags. Then they tap **Copy** and paste into their social app.
+A simple mobile-first web page for guests at **Sandbox VR at The Londoner Macau**. Guests tap an NFC sticker (or scan a QR code), pick a language, choose which game they played, answer two quick questions, and get a ready-to-post Instagram / 小红书 caption with hashtags. Then they tap **Copy** and paste into their social app.
 
 No account, no app install, no build tools — just open the page.
 
 ## What guests do
 
 1. Choose language: **English** | **繁體中文** | **简体中文**
-2. What they liked most (immersion/story, friends/team, or thrills/intensity)
-3. How they found you (walking by, social media, or friend/hotel tip)
-4. See a caption + hashtags in their language
-5. **Copy** it, or tap **Generate again** for a slight variation
+2. **What did you play?** — full Londoner lineup (scrollable large buttons)
+3. What they liked most (immersion/story, friends/team, or thrills/intensity)
+4. How they found you (walking by, social media, or friend/hotel tip)
+5. See a caption + hashtags in their language (mentions the chosen game)
+6. **Copy** it, or tap **Generate again** for a slight variation
+
+## Games (Londoner lineup)
+
+Canonical English titles (also used as `id` in `app.js`):
+
+1. Squid Game Virtuals
+2. Age of Dinosaurs
+3. Stranger Things: Catalyst
+4. Deadwood PHOBIA
+5. Seekers of the Shard: Dragonfire
+6. Deadwood Mansion
+7. Rebel Moon: The Descent
+8. Amber Sky 2088
+9. Deadwood Valley
+10. Curse of Davy Jones
+
+UI shows localized labels for 繁中 / 简中 (franchise names kept in English where natural).
 
 ## Files
 
 | File | Purpose |
 |------|---------|
-| `index.html` | Page structure |
+| `index.html` | Page structure (language → game → liked → found → result) |
 | `styles.css` | Mobile-first dark / VR look |
-| `app.js` | Language UI + 27 caption templates + copy button |
+| `app.js` | Games list + i18n UI + 27 caption templates + copy button |
 | `.gitignore` | Ignores OS junk / editor files |
 
 ## How to open locally (no install)
@@ -59,47 +77,6 @@ Upload `index.html`, `styles.css`, and `app.js` to Netlify, Cloudflare Pages, an
 
 **Important:** Use the final **HTTPS** URL for NFC and QR — not `http://` and not a `file://` path.
 
-## Programming an NFC tag
-
-You need writable NFC stickers/tags (NTAG213 / NTAG215 are common) and a phone that can write NFC.
-
-1. Deploy the site and copy the HTTPS URL (example: `https://your-site.example/`).
-2. On **iPhone**: App Store → “NFC Tools” (or similar) → Write → Add record → URL/URI → paste the HTTPS link → write to tag.
-3. On **Android**: Play Store → “NFC Tools” → Write → Add record → URL → paste → approach the tag to write.
-4. Test: lock the phone screen, tap the sticker with the phone — it should open the browser to your caption page.
-
-Tips:
-
-- Write only a **URL** record (not plain text), so phones open the browser automatically.
-- Keep the URL short if you can (optional custom domain or short path).
-- After testing, you can **lock** the tag (permanent) so guests cannot overwrite it — only do this when the URL is final.
-
-## QR code backup (same sticker)
-
-NFC does not work on every phone (and some cases block the antenna). Put a **QR code** on the same sticker that encodes the **same HTTPS URL**.
-
-1. Use any QR generator (e.g. search “QR code generator URL”).
-2. Paste your HTTPS link → download PNG/SVG.
-3. Print small on the sticker under or beside “Tap phone here”.
-4. Guests who cannot use NFC simply open the Camera app and scan.
-
-## Suggested sticker text
-
-Keep it short and bilingual so walk-by guests understand instantly:
-
-**Front (large):**
-
-> Tap for a free caption  
-> 輕觸手機 · 一鍵生成文案  
-> Sandbox VR · The Londoner Macau
-
-**Small print:**
-
-> NFC or scan QR · IG / 小红书 ready  
-> 支援 NFC 或掃描 QR
-
-Optional second line: “English · 繁中 · 简中”
-
 ## Customising captions later
 
 All captions live in `app.js` inside the `TEMPLATES` object. Keys look like:
@@ -108,9 +85,30 @@ All captions live in `app.js` inside the `TEMPLATES` object. Keys look like:
 `zh-Hant|friends|social`  
 `zh-Hans|thrills|friend`
 
-Edit the text, save, redeploy. No rebuild step.
+Each template includes a `{{game}}` placeholder. At caption time the app substitutes the **localized display name** for the game the guest picked, and may add game-specific hashtags (e.g. `#SquidGame`, `#StrangerThings`).
 
-There is a reserved query flag `?ai=1` for a possible future AI hook; it is **not** used yet — the app always uses these templates.
+Edit the text, save, redeploy. No rebuild step. Keep the 27 language × liked × found templates — do not explode into a per-game matrix.
+
+## Editing the games list
+
+The Londoner lineup lives in `app.js` as the `GAMES` array near the top. Each entry:
+
+```js
+{
+  id: "Squid Game Virtuals",          // exact English title (canonical)
+  labels: {
+    en: "Squid Game Virtuals",
+    "zh-Hant": "Squid Game 虛擬體驗",
+    "zh-Hans": "鱿鱼游戏 Virtuals",
+  },
+  hashtags: ["#SquidGame"],           // optional extras injected into captions
+}
+```
+
+- Add, remove, or reorder games in that array — the game-step buttons are built from it.
+- Keep `id` as the exact English title used on site menus.
+- Update `labels` for guest-friendly 繁中 / 简中 display names.
+- Optional `hashtags` are merged into the caption (after `#SandboxVR`) when present.
 
 ## Privacy
 
@@ -120,6 +118,8 @@ Nothing is uploaded. Choices stay in the browser on the guest’s phone. No anal
 
 - [ ] Site opens on iPhone Safari and Android Chrome
 - [ ] All three languages show the correct button labels
+- [ ] Game list shows all Londoner titles and scrolls on phone
+- [ ] Caption mentions the chosen game name
 - [ ] Copy button pastes correctly into Notes / IG / 小红书
 - [ ] NFC tag opens the HTTPS URL
 - [ ] QR on the sticker opens the same URL
