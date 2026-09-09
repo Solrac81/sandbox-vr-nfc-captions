@@ -19,6 +19,7 @@
     </header>
 
     <main id="main" class="main">
+      <!-- Step 1: Language -->
       <section id="step-lang" class="step active" data-step="lang">
         <h2 class="step-title" data-i18n="titleLang">Choose your language</h2>
         <p class="step-hint" data-i18n="hintLang">Pick one to continue</p>
@@ -29,6 +30,17 @@
         </div>
       </section>
 
+      <!-- Step 2: What did you play? -->
+      <section id="step-game" class="step" data-step="game" hidden>
+        <h2 class="step-title" data-i18n="titleGame">What did you play?</h2>
+        <p class="step-hint" data-i18n="hintGame">Tap your game</p>
+        <div class="choice-grid choice-grid-games" id="game-choices">
+          <!-- Populated by app.js from GAMES list -->
+        </div>
+        <button type="button" class="link-back" data-back data-i18n="back">← Back</button>
+      </section>
+
+      <!-- Step 3: What they liked -->
       <section id="step-liked" class="step" data-step="liked" hidden>
         <h2 class="step-title" data-i18n="titleLiked">What did you love most?</h2>
         <p class="step-hint" data-i18n="hintLiked">Tap one</p>
@@ -40,6 +52,7 @@
         <button type="button" class="link-back" data-back data-i18n="back">← Back</button>
       </section>
 
+      <!-- Step 4: How they found you -->
       <section id="step-found" class="step" data-step="found" hidden>
         <h2 class="step-title" data-i18n="titleFound">How did you find us?</h2>
         <p class="step-hint" data-i18n="hintFound">Tap one</p>
@@ -51,6 +64,7 @@
         <button type="button" class="link-back" data-back data-i18n="back">← Back</button>
       </section>
 
+      <!-- Step 5: Caption result -->
       <section id="step-result" class="step" data-step="result" hidden>
         <h2 class="step-title" data-i18n="titleResult">Your caption</h2>
         <p class="step-hint" data-i18n="hintResult">Copy and paste to IG or 小红书</p>
