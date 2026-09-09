@@ -302,3 +302,14 @@ body {
     font-size: 1.65rem;
   }
 }
+
+/* Long game lineup — slightly tighter type, still large tap targets */
+.choice-grid-games {
+  gap: 0.65rem;
+}
+
+.choice-btn.game-btn {
+  font-size: 1rem;
+  line-height: 1.35;
+  padding: 0.85rem 1.1rem;
+}
