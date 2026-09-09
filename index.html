@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0b0b1a" />
+  <meta name="description" content="Sandbox VR · The Londoner Macau — generate a share-ready caption for Instagram & 小红书" />
+  <title>Sandbox VR · The Londoner Macau</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app">
+    <header class="header">
+      <div class="logo-mark" aria-hidden="true">VR</div>
+      <div class="brand">
+        <h1>Sandbox VR</h1>
+        <p class="tagline">The Londoner Macau</p>
+      </div>
+    </header>
+
+    <main id="main" class="main">
+      <section id="step-lang" class="step active" data-step="lang">
+        <h2 class="step-title" data-i18n="titleLang">Choose your language</h2>
+        <p class="step-hint" data-i18n="hintLang">Pick one to continue</p>
+        <div class="choice-grid">
+          <button type="button" class="choice-btn" data-lang="en">English</button>
+          <button type="button" class="choice-btn" data-lang="zh-Hant">繁體中文</button>
+          <button type="button" class="choice-btn" data-lang="zh-Hans">简体中文</button>
+        </div>
+      </section>
+
+      <section id="step-liked" class="step" data-step="liked" hidden>
+        <h2 class="step-title" data-i18n="titleLiked">What did you love most?</h2>
+        <p class="step-hint" data-i18n="hintLiked">Tap one</p>
+        <div class="choice-grid" id="liked-choices">
+          <button type="button" class="choice-btn" data-liked="immersion" data-i18n="likedImmersion">Immersion / story</button>
+          <button type="button" class="choice-btn" data-liked="friends" data-i18n="likedFriends">Friends / team</button>
+          <button type="button" class="choice-btn" data-liked="thrills" data-i18n="likedThrills">Thrills / intensity</button>
+        </div>
+        <button type="button" class="link-back" data-back data-i18n="back">← Back</button>
+      </section>
+
+      <section id="step-found" class="step" data-step="found" hidden>
+        <h2 class="step-title" data-i18n="titleFound">How did you find us?</h2>
+        <p class="step-hint" data-i18n="hintFound">Tap one</p>
+        <div class="choice-grid" id="found-choices">
+          <button type="button" class="choice-btn" data-found="walking" data-i18n="foundWalking">Walking by at The Londoner</button>
+          <button type="button" class="choice-btn" data-found="social" data-i18n="foundSocial">Social media (IG / 小红书)</button>
+          <button type="button" class="choice-btn" data-found="friend" data-i18n="foundFriend">Friend or hotel recommendation</button>
+        </div>
+        <button type="button" class="link-back" data-back data-i18n="back">← Back</button>
+      </section>
+
+      <section id="step-result" class="step" data-step="result" hidden>
+        <h2 class="step-title" data-i18n="titleResult">Your caption</h2>
+        <p class="step-hint" data-i18n="hintResult">Copy and paste to IG or 小红书</p>
+        <div class="caption-card" id="caption-card" role="status" aria-live="polite"></div>
+        <div class="actions">
+          <button type="button" class="btn-primary" id="btn-copy" data-i18n="copy">Copy caption</button>
+          <button type="button" class="btn-secondary" id="btn-again" data-i18n="again">Generate again</button>
+        </div>
+        <p class="copy-feedback" id="copy-feedback" hidden data-i18n="copied">Copied!</p>
+        <button type="button" class="link-back" data-back data-i18n="back">← Back</button>
+        <button type="button" class="link-restart" id="btn-restart" data-i18n="restart">Start over</button>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p>Sandbox VR · The Londoner Macau</p>
+    </footer>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>
