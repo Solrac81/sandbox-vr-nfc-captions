@@ -6,7 +6,9 @@ No account, no app install, no build tools — just open the page.
 
 **Live site:** https://solrac81.github.io/sandbox-vr-nfc-captions/
 
-**Staff playbook (QR + free soda):** [STAFF.md](./STAFF.md)
+**Staff playbook (brief before play → photo help → assisted post + free soda):** [STAFF.md](./STAFF.md) · [STAFF-zh-Hant.md](./STAFF-zh-Hant.md) (繁中)
+
+**Guest hold-up cards (A5 print):** [EN](./print/guest-card-en.html) · [繁中](./print/guest-card-zh-Hant.html) · [简中](./print/guest-card-zh-Hans.html)
 
 ## QR-first (primary)
 
@@ -54,7 +56,9 @@ Stable English `id` slugs in `app.js` (logic). Display labels follow the guest's
 
 | File | Purpose |
 |------|---------|
-| `STAFF.md` | Floor staff playbook (QR captions + free soda) |
+| `STAFF.md` | Floor staff playbook: brief before play, assist photos + post, free soda |
+| `STAFF-zh-Hant.md` | Same playbook in Traditional Chinese (guest scripts stay EN/繁/简) |
+| `print/guest-card-*.html` | A5 guest hold-up cards (EN / 繁中 / 简中) with QR + free soda |
 | `index.html` | Page structure (language → game → liked → found → result) |
 | `styles.css` | Mobile-first dark / VR look |
 | `templates-en.js` | English caption variants (9 keys × 3) |
