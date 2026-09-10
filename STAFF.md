@@ -5,6 +5,8 @@ Print this page. Keep a copy at the counter / lobby / photo spot / exit.
 
 Guest link: https://solrac81.github.io/sandbox-vr-nfc-captions/  
 QR print page: https://solrac81.github.io/sandbox-vr-nfc-captions/qr.html
+繁中員工版：[STAFF-zh-Hant.md](./STAFF-zh-Hant.md)
+Guest hold-up cards (A5)：[print/](./print/) — EN · 繁中 · 简中
 
 **Floor reality:** Guests **cannot use phones during the VR session** (hands-on). They must hear about the QR caption + free soda **before** play. Staff help with photos on the **guest’s phone** when phones are allowed, then after the session help them open the QR page, copy the caption, post, and claim soda — less friction, more posts.
 
