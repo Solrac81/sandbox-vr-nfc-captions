@@ -50,7 +50,10 @@ Stable English `id` slugs in `app.js` (logic). Display labels follow the guest's
 |------|---------|
 | `index.html` | Page structure (language → game → liked → found → result) |
 | `styles.css` | Mobile-first dark / VR look |
-| `app.js` | Games list + i18n UI + 27 caption templates + copy button |
+| `templates-en.js` | English caption variants (9 keys × 3) |
+| `templates-zh-Hant.js` | Traditional Chinese caption variants |
+| `templates-zh-Hans.js` | Simplified Chinese caption variants |
+| `app.js` | Games list + i18n UI + copy / Generate again logic |
 | `.gitignore` | Ignores OS junk / editor files |
 
 ## How to open locally (no install)
@@ -143,7 +146,7 @@ Optional second line: "English · 繁中 · 简中"
 
 ## Customising captions later
 
-All captions live in `app.js` inside the `TEMPLATES` object. Keys look like:
+All captions live in `templates-*.js` (merged into `TEMPLATES` before `app.js` runs). Keys look like:
 
 `en|immersion|walking`  
 `zh-Hant|friends|social`  
