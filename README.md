@@ -17,6 +17,8 @@ Carlos's primary guest path is **QR**:
 
 NFC is an **optional backup** for phones that support it — same HTTPS URL. Prefer QR on every sticker so all guests can start without NFC.
 
+**Printable QR:** [`qr.png`](./qr.png) · [raw GitHub URL](https://raw.githubusercontent.com/Solrac81/sandbox-vr-nfc-captions/main/qr.png)
+
 ## What guests do
 
 1. Choose language: **English** | **繁體中文** | **简体中文**
@@ -54,6 +56,7 @@ Stable English `id` slugs in `app.js` (logic). Display labels follow the guest's
 | `templates-zh-Hant.js` | Traditional Chinese caption variants |
 | `templates-zh-Hans.js` | Simplified Chinese caption variants |
 | `app.js` | Games list + i18n UI + copy / Generate again logic |
+| `qr.png` | Printable QR pointing at the live Pages URL |
 | `.gitignore` | Ignores OS junk / editor files |
 
 ## How to open locally (no install)
@@ -106,8 +109,9 @@ Upload `index.html`, `styles.css`, and `app.js` to Netlify, Cloudflare Pages, an
 
 1. Deploy (or use) the HTTPS URL:  
    `https://solrac81.github.io/sandbox-vr-nfc-captions/`
-2. Use any QR generator (search "QR code generator URL").
-3. Paste the link → download PNG/SVG.
+2. **Printable QR is already in the repo:** [`qr.png`](./qr.png)  
+   Raw download: https://raw.githubusercontent.com/Solrac81/sandbox-vr-nfc-captions/main/qr.png
+3. Or regenerate with any QR tool (search "QR code generator URL") → paste the link → PNG/SVG.
 4. Print large enough to scan at arm's length on stickers / cards.
 5. Test with iPhone and Android Camera apps.
 
@@ -152,7 +156,7 @@ All captions live in `templates-*.js` (merged into `TEMPLATES` before `app.js` r
 `zh-Hant|friends|social`  
 `zh-Hans|thrills|friend`
 
-Each key maps to an **array of 3 full captions** (all with a `{{game}}` placeholder). **Generate again** cycles the whole caption (`againIndex % 3`) — it does not append a suffix. At caption time the app substitutes the **localized display name** for the game the guest picked (label for their UI language), and may add game-specific hashtags (e.g. `#SquidGame`, `#StrangerThings`).
+Each key maps to an **array of 3 full captions** (all with a `{{game}}` placeholder). Every caption ends with **exactly 5 hashtags** (brand/local + two relevant; game tags may swap into the last slots). **Generate again** cycles the whole caption (`againIndex % 3`) — it does not append a suffix. At caption time the app substitutes the **localized display name** for the game the guest picked (label for their UI language), and may add game-specific hashtags (e.g. `#SquidGame`, `#StrangerThings`).
 
 Edit the text, save, redeploy. No rebuild step. Keep the 27 language × liked × found keys (3 variants each) — do not explode into a per-game matrix.
 
@@ -177,7 +181,7 @@ The Londoner lineup lives in `app.js` as the `GAMES` array near the top. Each en
 - Add, remove, or reorder games in that array — the game-step buttons are built from it.
 - Keep `id` as a stable English slug (not the display title).
 - Update `labels` for guest-friendly en / 繁中 / 简中 names used in UI and `{{game}}`.
-- Optional `hashtags` are merged into the caption (after `#SandboxVR`) when present.
+- Optional `hashtags` replace the last non-core slots so the caption stays at **exactly 5** hashtags.
 
 ## Privacy
 
