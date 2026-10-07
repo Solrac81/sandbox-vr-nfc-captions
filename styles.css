@@ -313,3 +313,11 @@ body {
   line-height: 1.35;
   padding: 0.85rem 1.1rem;
 }
+
+/* Platform tabs (Instagram / 小红书 / Google) */
+.platform-tabs { display: flex; gap: 0.5rem; margin: 0 0 0.75rem; flex-wrap: wrap; }
+.platform-tab { flex: 1 1 0; padding: 0.6rem 0.5rem; border-radius: 999px; border: 1px solid currentColor; background: transparent; color: inherit; font: inherit; cursor: pointer; }
+.platform-tab.active { background: #111; color: #fff; border-color: #111; }
+.btn-google { display: block; text-align: center; margin: 0.75rem 0; padding: 0.85rem 1rem; border-radius: 10px; background: #1a73e8; color: #fff; text-decoration: none; font-weight: 600; }
+.btn-google[hidden] { display: none; }
+.new-badge { display: inline-block; margin-left: 0.25rem; padding: 0.1rem 0.45rem; border-radius: 999px; background: #e53935; color: #fff; font-size: 0.7em; font-weight: 700; vertical-align: middle; }

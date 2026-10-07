@@ -1,6 +1,6 @@
-# Sandbox VR · The Londoner Macau — Caption Generator
+# QR code captions — Sandbox VR · The Londoner Macau
 
-Mobile-first guest page: scan a QR, pick a language and game, answer two quick questions, then **Copy** a ready Instagram / 小红书 caption.
+Mobile-first guest page: scan a QR, pick a language and game, answer two quick questions, then **Copy** a ready Instagram / 小红书 caption or Google review.
 
 **Live site:** https://solrac81.github.io/sandbox-vr-nfc-captions/
 
@@ -12,7 +12,7 @@ Mobile-first guest page: scan a QR, pick a language and game, answer two quick q
 2. Choose language: English · 繁體中文 · 简体中文
 3. Pick the game you played
 4. Answer what you liked + how you found us
-5. Tap **Copy**, paste into Instagram or 小红书
+5. Tap **Copy**, paste into Instagram, 小红书 or Google review
 
 ## QR assets
 
@@ -26,4 +26,4 @@ Print from `qr.html` or use `qr.svg` on stickers / table tents.
 
 ## Guest app files
 
-`index.html` · `app.js` · `styles.css` · `templates-en.js` · `templates-zh-Hant.js` · `templates-zh-Hans.js`
+`index.html` · `app.js` · `styles.css` · `templates-en.js` · `templates-zh-Hant.js` · `templates-zh-Hans.js` · `templates-platforms.js`

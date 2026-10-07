@@ -2,7 +2,8 @@
  * Sandbox VR · The Londoner Macau — caption generator
  * Flow: language → game → liked → found → caption
  * Template matrix: 3 languages × 3 liked × 3 found × 3 variants = 81 captions
- * Chosen game name is injected via {{game}}; optional game hashtags appended.
+ * Platforms: Instagram (templates-*.js), 小红书 + Google review (templates-platforms.js).
+ * Every IG / 小红书 caption gets exactly 5 hashtags in the chosen language.
  * Optional future hook: ?ai=1 (skipped — templates only)
  */
 
@@ -11,111 +12,125 @@
 
   // --- Londoner lineup (edit this list to add/remove games) ---
   // id = stable English slug (logic). labels = UI display per language.
+  // tags = one game hashtag per language (IG). xhs = 小红书-safe overrides for IP games:
+  // generic description + generic hashtag (小红书 captions never name Netflix / IP titles).
   const GAMES = [
     {
+      id: "deadwood-origins",
+      isNew: true,
+      labels: { en: "Deadwood Origins", "zh-Hant": "屍森：起源", "zh-Hans": "尸森：起源" },
+      tags: { en: "#DeadwoodOrigins", "zh-Hant": "#屍森起源", "zh-Hans": "#尸森起源" },
+    },
+    {
       id: "deadwood-phobia",
-      labels: {
-        en: "Deadwood PHOBIA",
-        "zh-Hant": "屍森恐懼",
-        "zh-Hans": "尸森恐惧",
-      },
-      hashtags: ["#Deadwood", "#PHOBIA"],
+      labels: { en: "Deadwood PHOBIA", "zh-Hant": "屍森恐懼", "zh-Hans": "尸森恐惧" },
+      tags: { en: "#DeadwoodPhobia", "zh-Hant": "#屍森恐懼", "zh-Hans": "#尸森恐惧" },
     },
     {
       id: "squid-game-virtuals",
-      labels: {
-        en: "Squid Game Virtuals",
-        "zh-Hant": "魷魚遊戲：虛擬對決",
-        "zh-Hans": "鱿鱼游戏：虚拟对决",
+      ip: true,
+      labels: { en: "Squid Game Virtuals", "zh-Hant": "魷魚遊戲：虛擬對決", "zh-Hans": "鱿鱼游戏：虚拟对决" },
+      tags: { en: "#SquidGame", "zh-Hant": "#魷魚遊戲", "zh-Hans": "#鱿鱼游戏" },
+      xhs: {
+        labels: { en: "a survival-challenge VR game", "zh-Hant": "生存挑戰主題VR", "zh-Hans": "生存挑战主题VR" },
+        tags: { en: "#SurvivalChallenge", "zh-Hant": "#生存挑戰", "zh-Hans": "#生存挑战" },
       },
-      hashtags: ["#SquidGame"],
     },
     {
       id: "stranger-things-catalyst",
-      labels: {
-        en: "Stranger Things: Catalyst",
-        "zh-Hant": "Stranger Things: Catalyst",
-        "zh-Hans": "Stranger Things: Catalyst",
+      ip: true,
+      labels: { en: "Stranger Things: Catalyst", "zh-Hant": "Stranger Things: Catalyst", "zh-Hans": "Stranger Things: Catalyst" },
+      tags: { en: "#StrangerThings", "zh-Hant": "#怪奇物語", "zh-Hans": "#怪奇物语" },
+      xhs: {
+        labels: { en: "a sci-fi adventure VR game", "zh-Hant": "科幻冒險主題VR", "zh-Hans": "科幻冒险主题VR" },
+        tags: { en: "#SciFiAdventure", "zh-Hant": "#科幻冒險", "zh-Hans": "#科幻冒险" },
       },
-      hashtags: ["#StrangerThings"],
     },
     {
       id: "age-of-dinosaurs",
-      labels: {
-        en: "Age of Dinosaurs",
-        "zh-Hant": "恐龍紀元",
-        "zh-Hans": "恐龙纪元",
-      },
-      hashtags: ["#AgeOfDinosaurs"],
+      labels: { en: "Age of Dinosaurs", "zh-Hant": "恐龍紀元", "zh-Hans": "恐龙纪元" },
+      tags: { en: "#AgeOfDinosaurs", "zh-Hant": "#恐龍紀元", "zh-Hans": "#恐龙纪元" },
     },
     {
       id: "rebel-moon-the-descent",
-      labels: {
-        en: "Rebel Moon: The Descent",
-        "zh-Hant": "Rebel Moon: The Descent",
-        "zh-Hans": "Rebel Moon: The Descent",
+      ip: true,
+      labels: { en: "Rebel Moon: The Descent", "zh-Hant": "Rebel Moon: The Descent", "zh-Hans": "Rebel Moon: The Descent" },
+      tags: { en: "#RebelMoon", "zh-Hant": "#月球叛軍", "zh-Hans": "#月球叛军" },
+      xhs: {
+        labels: { en: "a space adventure VR game", "zh-Hant": "太空冒險主題VR", "zh-Hans": "太空冒险主题VR" },
+        tags: { en: "#SpaceAdventure", "zh-Hant": "#太空冒險", "zh-Hans": "#太空冒险" },
       },
-      hashtags: ["#RebelMoon"],
     },
     {
       id: "deadwood-valley",
-      labels: {
-        en: "Deadwood Valley",
-        "zh-Hant": "屍森血谷",
-        "zh-Hans": "尸森血谷",
-      },
-      hashtags: ["#Deadwood"],
+      labels: { en: "Deadwood Valley", "zh-Hant": "屍森血谷", "zh-Hans": "尸森血谷" },
+      tags: { en: "#DeadwoodValley", "zh-Hant": "#屍森血谷", "zh-Hans": "#尸森血谷" },
     },
     {
       id: "seekers-dragonfire",
-      labels: {
-        en: "Seekers of the Shard: Dragonfire",
-        "zh-Hant": "魔石戰記：龍之焰",
-        "zh-Hans": "魔石战记：龙之焰",
-      },
-      hashtags: ["#SeekersOfTheShard", "#Dragonfire"],
+      labels: { en: "Seekers of the Shard: Dragonfire", "zh-Hant": "魔石戰記：龍之焰", "zh-Hans": "魔石战记：龙之焰" },
+      tags: { en: "#SeekersOfTheShard", "zh-Hant": "#魔石戰記", "zh-Hans": "#魔石战记" },
     },
     {
       id: "amber-sky-2088",
-      labels: {
-        en: "Amber Sky 2088",
-        "zh-Hant": "鋼鐵星空 2088",
-        "zh-Hans": "钢铁星空 2088",
-      },
-      hashtags: ["#AmberSky2088"],
+      labels: { en: "Amber Sky 2088", "zh-Hant": "鋼鐵星空 2088", "zh-Hans": "钢铁星空 2088" },
+      tags: { en: "#AmberSky2088", "zh-Hant": "#鋼鐵星空2088", "zh-Hans": "#钢铁星空2088" },
     },
     {
       id: "deadwood-mansion",
-      labels: {
-        en: "Deadwood Mansion",
-        "zh-Hant": "屍森大宅",
-        "zh-Hans": "尸森大宅",
-      },
-      hashtags: ["#Deadwood"],
+      labels: { en: "Deadwood Mansion", "zh-Hant": "屍森大宅", "zh-Hans": "尸森大宅" },
+      tags: { en: "#DeadwoodMansion", "zh-Hant": "#屍森大宅", "zh-Hans": "#尸森大宅" },
     },
     {
       id: "curse-of-davy-jones",
-      labels: {
-        en: "Curse of Davy Jones",
-        "zh-Hant": "海魔的詛咒",
-        "zh-Hans": "海魔的诅咒",
-      },
-      hashtags: ["#CurseOfDavyJones", "#DavyJones"],
+      labels: { en: "Curse of Davy Jones", "zh-Hant": "海魔的詛咒", "zh-Hans": "海魔的诅咒" },
+      tags: { en: "#CurseOfDavyJones", "zh-Hant": "#海魔的詛咒", "zh-Hans": "#海魔的诅咒" },
     },
     {
       id: "ufl-unbound",
-      labels: {
-        en: "UFL: Unbound Fighting League",
-        "zh-Hant": "決戰聯盟：解放",
-        "zh-Hans": "决战联盟：解放",
-      },
-      hashtags: ["#UFL", "#UnboundFightingLeague"],
+      labels: { en: "UFL: Unbound Fighting League", "zh-Hant": "決戰聯盟：解放", "zh-Hans": "决战联盟：解放" },
+      tags: { en: "#UFL", "zh-Hant": "#決戰聯盟", "zh-Hans": "#决战联盟" },
     },
   ];
+
+  // --- Google review link ---
+  // TODO: replace with https://search.google.com/local/writereview?placeid=PLACE_ID
+  //       once the Google Place ID for Sandbox VR at The Londoner Macau is confirmed.
+  const GOOGLE_REVIEW_URL =
+    "https://www.google.com/maps/search/?api=1&query=" +
+    encodeURIComponent("Sandbox VR Macau The Londoner");
+
+  // --- Hashtags: exactly 5 per IG / 小红书 caption, all in the guest's language ---
+  const HASHTAGS = {
+    core: {
+      en: ["#SandboxVR", "#TheLondonerMacau", "#MacauTravel", "#VRGaming", "#MacauThingsToDo"],
+      "zh-Hant": ["#澳門倫敦人", "#澳門旅遊", "#澳門好去處", "#虛擬實境", "#澳門打卡"],
+      "zh-Hans": ["#澳门伦敦人", "#澳门旅游", "#澳门好去处", "#虚拟现实", "#澳门打卡"],
+    },
+    liked: {
+      en: { immersion: "#ImmersiveExperience", friends: "#FriendsTrip", thrills: "#AdrenalineRush" },
+      "zh-Hant": { immersion: "#沉浸式體驗", friends: "#朋友聚會", thrills: "#刺激體驗" },
+      "zh-Hans": { immersion: "#沉浸式体验", friends: "#朋友聚会", thrills: "#刺激体验" },
+    },
+  };
+  const HASHTAG_COUNT = 5;
+
+  const XHS_LOCATION = {
+    en: "📍 The Londoner Macau, Level 2",
+    "zh-Hant": "📍澳門倫敦人2樓",
+    "zh-Hans": "📍澳门伦敦人2楼",
+  };
+
+  const PLATFORMS = ["ig", "xhs", "google"];
 
   // --- i18n UI strings ---
   const UI = {
     en: {
+      platformIg: "Instagram",
+      platformXhs: "小红书",
+      platformGoogle: "Google review",
+      openGoogle: "Open Google review page",
+      newBadge: "NEW",
       titleLang: "Choose your language",
       hintLang: "Pick one to continue",
       titleGame: "What did you play?",
@@ -131,7 +146,7 @@
       foundSocial: "Social media (IG / 小红书)",
       foundFriend: "Friend or hotel recommendation",
       titleResult: "Your caption",
-      hintResult: "Copy and paste to IG or 小红书",
+      hintResult: "Pick a platform, edit if you like, then copy & post",
       copy: "Copy caption",
       again: "Generate again",
       copied: "Copied!",
@@ -140,6 +155,11 @@
       restart: "Start over",
     },
     "zh-Hant": {
+      platformIg: "Instagram",
+      platformXhs: "小紅書",
+      platformGoogle: "Google 評論",
+      openGoogle: "打開 Google 評論頁",
+      newBadge: "新",
       titleLang: "選擇語言",
       hintLang: "點選繼續",
       titleGame: "你玩咗邊個遊戲？",
@@ -155,7 +175,7 @@
       foundSocial: "社交媒體（IG／小紅書）",
       foundFriend: "朋友或酒店推薦",
       titleResult: "你的文案",
-      hintResult: "複製後貼到 IG 或小紅書",
+      hintResult: "揀平台，可自行修改，再複製發佈",
       copy: "複製文案",
       again: "再生成一次",
       copied: "已複製！",
@@ -164,6 +184,11 @@
       restart: "重新開始",
     },
     "zh-Hans": {
+      platformIg: "Instagram",
+      platformXhs: "小红书",
+      platformGoogle: "Google 评论",
+      openGoogle: "打开 Google 评论页",
+      newBadge: "新",
       titleLang: "选择语言",
       hintLang: "点选继续",
       titleGame: "你玩了哪个游戏？",
@@ -179,7 +204,7 @@
       foundSocial: "社交媒体（IG／小红书）",
       foundFriend: "朋友或酒店推荐",
       titleResult: "你的文案",
-      hintResult: "复制后贴到 IG 或小红书",
+      hintResult: "选平台，可自行修改，再复制发布",
       copy: "复制文案",
       again: "再生成一次",
       copied: "已复制！",
@@ -192,6 +217,7 @@
   // --- Caption template matrix (loaded from templates-*.js before this file) ---
   // Key: lang | liked | found → array of 3 full captions; Generate again cycles whole caption
   const TEMPLATES = window.TEMPLATES || {};
+  const PLATFORM_TEMPLATES = window.PLATFORM_TEMPLATES || {};
 
 
   // Fallback line if a template somehow lacks {{game}}
@@ -204,26 +230,12 @@
   // --- State ---
   const state = {
     lang: "en",
+    platform: "ig",
     game: null,
     liked: null,
     found: null,
     againIndex: 0,
   };
-
-  // --- DOM ---
-  const steps = {
-    lang: document.getElementById("step-lang"),
-    game: document.getElementById("step-game"),
-    liked: document.getElementById("step-liked"),
-    found: document.getElementById("step-found"),
-    result: document.getElementById("step-result"),
-  };
-  const gameChoices = document.getElementById("game-choices");
-  const captionCard = document.getElementById("caption-card");
-  const btnCopy = document.getElementById("btn-copy");
-  const btnAgain = document.getElementById("btn-again");
-  const btnRestart = document.getElementById("btn-restart");
-  const copyFeedback = document.getElementById("copy-feedback");
 
   // --- Helpers ---
   function findGame(id) {
@@ -277,6 +289,13 @@
       btn.className = "choice-btn game-btn";
       btn.setAttribute("data-game", game.id);
       btn.textContent = gameDisplayName(game, lang);
+      if (game.isNew) {
+        const badge = document.createElement("span");
+        badge.className = "new-badge";
+        badge.textContent = (UI[lang] || UI.en).newBadge;
+        btn.appendChild(document.createTextNode(" "));
+        btn.appendChild(badge);
+      }
       btn.addEventListener("click", function () {
         state.game = game.id;
         state.liked = null;
@@ -288,59 +307,110 @@
     });
   }
 
-  function injectGameHashtags(text, game) {
-    /* Keep final caption at exactly 5 hashtags: core 3 + game tags + fill. */
-    var hashIdx = text.search(/\n\n#/);
-    if (hashIdx === -1) {
-      if (!game || !game.hashtags || !game.hashtags.length) return text;
-      return text + "\n\n" + game.hashtags.slice(0, 5).join(" ");
+  function stripHashtags(text) {
+    var idx = text.search(/\n\n#/);
+    return (idx === -1 ? text : text.slice(0, idx)).trim();
+  }
+
+  function buildHashtags(lang, platform, game, liked) {
+    var core = HASHTAGS.core[lang] || HASHTAGS.core.en;
+    var gameTag = null;
+    if (game) {
+      var src = platform === "xhs" && game.xhs ? game.xhs.tags : game.tags;
+      gameTag = src && src[lang];
     }
-    var body = text.slice(0, hashIdx);
-    var tags = text.slice(hashIdx + 2).trim().split(/\s+/).filter(Boolean);
-    var core = tags.slice(0, 3);
+    var likedTag = (HASHTAGS.liked[lang] || {})[liked];
+    var wanted = [core[0], core[1], gameTag, likedTag, core[2], core[3], core[4]];
     var used = {};
-    var result = [];
-    function pushTag(tag) {
-      if (!tag || used[tag] || result.length >= 5) return;
-      used[tag] = true;
-      result.push(tag);
+    var out = [];
+    wanted.forEach(function (t) {
+      if (!t || out.length >= HASHTAG_COUNT) return;
+      var k = t.toLowerCase();
+      if (used[k]) return;
+      used[k] = true;
+      out.push(t);
+    });
+    return out;
+  }
+
+  function quoteName(name, lang, generic) {
+    if (generic || !name) return name;
+    if (lang === "zh-Hans") return "《" + name + "》";
+    if (lang === "zh-Hant") return "「" + name + "」";
+    return name;
+  }
+
+  /** Pure generator: no DOM. platform = ig | xhs | google */
+  function generate(opts) {
+    var lang = opts.lang || "en";
+    var platform = opts.platform || "ig";
+    var liked = opts.liked || "immersion";
+    var found = opts.found || "walking";
+    var idx = opts.variant || 0;
+    var game = findGame(opts.game);
+
+    if (platform === "ig") {
+      var variants = TEMPLATES[lang + "|" + liked + "|" + found] || TEMPLATES["en|immersion|walking"];
+      var tpl = stripHashtags(variants[idx % variants.length]);
+      var name = gameDisplayName(game, lang) || opts.game || "";
+      var text = tpl;
+      if (text.indexOf("{{game}}") !== -1) {
+        text = text.split("{{game}}").join(name);
+      } else if (name) {
+        text += "\n\n" + (GAME_FALLBACK[lang] || GAME_FALLBACK.en).split("{{game}}").join(name);
+      }
+      return text + "\n\n" + buildHashtags(lang, "ig", game, liked).join(" ");
     }
-    for (var c = 0; c < core.length; c++) pushTag(core[c]);
-    if (game && game.hashtags) {
-      for (var i = 0; i < game.hashtags.length; i++) pushTag(game.hashtags[i]);
-    }
-    for (var j = 3; j < tags.length; j++) pushTag(tags[j]);
-    return body + "\n\n" + result.join(" ");
+
+    var set = (PLATFORM_TEMPLATES[platform] || {})[lang] || PLATFORM_TEMPLATES[platform].en;
+    var list = set[liked] || set.immersion;
+    var t = list[idx % list.length];
+    var generic = platform === "xhs" && game && game.xhs;
+    var gname = generic ? game.xhs.labels[lang] : gameDisplayName(game, lang);
+    gname = quoteName(gname, lang, generic);
+    var out = t.split("{{found}}").join(set.found[found] || "").split("{{game}}").join(gname);
+    out = out.replace(/^ +/, "").replace(/  +/g, " ");
+    if (platform === "google") return out;
+    return out + "\n" + XHS_LOCATION[lang] + "\n\n" + buildHashtags(lang, "xhs", game, liked).join(" ");
   }
 
   function buildCaption() {
-    const key = state.lang + "|" + state.liked + "|" + state.found;
-    let variants = TEMPLATES[key];
-    if (!variants || !variants.length) {
-      variants = TEMPLATES["en|immersion|walking"];
-    }
-    const textTpl = variants[state.againIndex % variants.length];
-
-    const game = findGame(state.game);
-    const name = gameDisplayName(game, state.lang) || state.game || "";
-
-    let text = textTpl;
-    if (text.indexOf("{{game}}") !== -1) {
-      text = text.split("{{game}}").join(name);
-    } else if (name) {
-      const fallbackTpl = GAME_FALLBACK[state.lang] || GAME_FALLBACK.en;
-      const line = fallbackTpl.split("{{game}}").join(name);
-      const hashIdx = text.search(/\n\n#/);
-      if (hashIdx !== -1) {
-        text = text.slice(0, hashIdx) + "\n\n" + line + text.slice(hashIdx);
-      } else {
-        text = text + "\n\n" + line;
-      }
-    }
-
-    text = injectGameHashtags(text, game);
-    return text;
+    return generate({
+      lang: state.lang,
+      platform: state.platform,
+      game: state.game,
+      liked: state.liked,
+      found: state.found,
+      variant: state.againIndex,
+    });
   }
+
+  // Expose pure logic for headless tests (node) and debugging
+  window.CaptionGen = {
+    GAMES: GAMES,
+    PLATFORMS: PLATFORMS,
+    GOOGLE_REVIEW_URL: GOOGLE_REVIEW_URL,
+    generate: generate,
+    buildHashtags: buildHashtags,
+  };
+  if (typeof document === "undefined" || !document.getElementById("step-lang")) return;
+
+  // --- DOM ---
+  const steps = {
+    lang: document.getElementById("step-lang"),
+    game: document.getElementById("step-game"),
+    liked: document.getElementById("step-liked"),
+    found: document.getElementById("step-found"),
+    result: document.getElementById("step-result"),
+  };
+  const gameChoices = document.getElementById("game-choices");
+  const captionCard = document.getElementById("caption-card");
+  const btnCopy = document.getElementById("btn-copy");
+  const btnAgain = document.getElementById("btn-again");
+  const btnRestart = document.getElementById("btn-restart");
+  const copyFeedback = document.getElementById("copy-feedback");
+  const btnGoogle = document.getElementById("btn-google");
+  const platformTabs = document.querySelectorAll("[data-platform]");
 
   function renderCaption() {
     captionCard.textContent = buildCaption();
@@ -348,7 +418,24 @@
     btnCopy.classList.remove("copied");
     const strings = UI[state.lang] || UI.en;
     btnCopy.textContent = strings.copy;
+    platformTabs.forEach(function (tab) {
+      const on = tab.getAttribute("data-platform") === state.platform;
+      tab.classList.toggle("active", on);
+      tab.setAttribute("aria-pressed", on ? "true" : "false");
+    });
+    if (btnGoogle) {
+      btnGoogle.hidden = state.platform !== "google";
+      btnGoogle.href = GOOGLE_REVIEW_URL;
+    }
   }
+
+  platformTabs.forEach(function (tab) {
+    tab.addEventListener("click", function () {
+      state.platform = tab.getAttribute("data-platform");
+      state.againIndex = 0;
+      renderCaption();
+    });
+  });
 
   function copyText(text) {
     if (navigator.clipboard && window.isSecureContext) {
