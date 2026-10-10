@@ -94,11 +94,9 @@
   ];
 
   // --- Google review link ---
-  // TODO: replace with https://search.google.com/local/writereview?placeid=PLACE_ID
-  //       once the Google Place ID for Sandbox VR at The Londoner Macau is confirmed.
+  // Place ID verified against Google Maps CID for SANDBOX VR MACAU at The Londoner (2213A & 2215).
   const GOOGLE_REVIEW_URL =
-    "https://www.google.com/maps/search/?api=1&query=" +
-    encodeURIComponent("Sandbox VR Macau The Londoner");
+    "https://search.google.com/local/writereview?placeid=ChIJabWO9tNxATQRcQFtwkXrOSk";
 
   // --- Hashtags: exactly 5 per IG / 小红书 caption, all in the guest's language ---
   const HASHTAGS = {
